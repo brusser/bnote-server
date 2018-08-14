@@ -1,0 +1,152 @@
+swagger: "2.0"
+info:
+  description: "Simple Note Application."
+  version: "1.0.0"
+  title: "B Note"
+  contact:
+    email: "brusser@gmail.com"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "localhost:8080"
+basePath: "/v1"
+tags:
+- name: "note"
+  description: "Notes and operations with notes"
+schemes:
+- "http"
+paths:
+  /note:
+    get:
+      tags:
+        - "note"
+      summary: "Add a new note"
+      description: ""
+      operationId: "getAllNotes"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "Success list of notes returned"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Note"
+    post:
+      tags:
+      - "note"
+      summary: "Add a new note"
+      description: ""
+      operationId: "addNote"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Note object"
+        required: true
+        schema:
+          $ref: "#/definitions/Note"
+      responses:
+        200:
+          description: "Success added note returned"
+          schema:
+            $ref: "#/definitions/Note"
+        405:
+          description: "Invalid input"
+    put:
+      tags:
+      - "note"
+      summary: "Update an existing note"
+      description: ""
+      operationId: "updateNote"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Note object"
+        required: true
+        schema:
+          $ref: "#/definitions/Note"
+      responses:
+        200:
+          description: "Success updated note returned"
+          schema:
+            $ref: "#/definitions/Note"
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Note not found"
+        405:
+          description: "Validation exception"
+
+  /note/{noteId}:
+    get:
+      tags:
+      - "note"
+      summary: "Find note by ID"
+      description: "Returns a single note"
+      operationId: "getNoteById"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "noteId"
+        in: "path"
+        description: "ID of note to return"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "Success requested note returned"
+          schema:
+            $ref: "#/definitions/Note"
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Note not found"
+    delete:
+      tags:
+      - "note"
+      summary: "Deletes a note"
+      description: ""
+      operationId: "deleteNote"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "noteId"
+        in: "path"
+        description: "Note id to delete"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "Successful deleted note returned"
+          schema:
+            $ref: "#/definitions/Note"
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Note not found"
+definitions:
+  Note:
+    type: "object"
+    required:
+    - "title"
+    - "content"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      title:
+        type: "string"
+      content:
+        type: "string"
+    xml:
+      name: "Note"
